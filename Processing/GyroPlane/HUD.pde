@@ -69,7 +69,7 @@ void DrawHUD() {
   fill(255); // White
   text("Gravity", 200, height - 80, 200, 20);
   fill(255, 16, 32); // Red
-  text("X: " + Gravity[0], 200, height - 60, 200, 20);
+  text("X: " + -Gravity[0], 200, height - 60, 200, 20);
   fill(16, 255, 16); // Green
   text("Y: " + Gravity[2], 200, height - 40, 200, 20);
   fill(16, 128, 255); // Blue
@@ -88,9 +88,9 @@ void DrawHUD() {
   // Display latest yaw/pitch/roll angles
   fill(255); // White
   text("Yaw/Pitch/Roll", 600, height - 80, 200, 20);
-  fill(255, 16, 32); // Red
-  text("Y: " + ypr[0], 600, height - 60, 200, 20);
   fill(16, 255, 16); // Green
+  text("Y: " + ypr[0], 600, height - 60, 200, 20);
+  fill(255, 16, 32); // Red
   text("P: " + ypr[2], 600, height - 40, 200, 20);
   fill(16, 128, 255); // Blue
   text("R: " + ypr[1], 600, height - 20, 200, 20);
@@ -98,12 +98,8 @@ void DrawHUD() {
   // Display angle offsets
   fill(255); // White
   text("Offsets", 800, height - 80, 200, 20);
-  fill(255, 16, 32); // Red
+  fill(16, 255, 16); // Green
   text("Y: " + YawOffset, 800, height - 60, 200, 20);
-  //fill(16, 255, 16); // Green
-  //text("P: " + ypr[2], 800, height - 40, 200, 20);
-  //fill(16, 128, 255); // Blue
-  //text("R: " + ypr[1], 800, height - 20, 200, 20);
   
 }
 

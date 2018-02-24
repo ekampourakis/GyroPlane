@@ -7,7 +7,7 @@ import toxi.processing.*;
 int IndicatorFPS = 10;
 float CalibrationSensitivity = 0.015;
 int DisconnectedInterval = 500;
-float m = 3.0; // Graphics size multiplier
+float m = 2.0; // Graphics size multiplier
 
 // Declarations
 ToxiclibsSupport gfx;
@@ -24,7 +24,7 @@ float YawOffset = 0.0;
 
 // HUD variables
 boolean ShowHUD = true;
-boolean ShowAxes = false;
+boolean ShowAxes = true;
 
 // Text animation variables
 int DotAmount = 0;

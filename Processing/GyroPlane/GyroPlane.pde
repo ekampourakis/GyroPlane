@@ -72,7 +72,7 @@ void draw() {
   
   if (ShowAxes) {
     // Draw the system axes with negative values
-    DrawAxes(500, true);
+    DrawAxes(300, true);
   }
   
   // *** FIX IT IF YOU CAN ***
