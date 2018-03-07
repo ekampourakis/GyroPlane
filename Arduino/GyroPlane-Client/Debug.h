@@ -7,6 +7,20 @@ void InitDebug() {
   digitalWrite(LED_PIN, LOW);
 }
 
+// Time keeping variable for capping LED blinking frequency
+unsigned long lastBlink = 0;
+// Last LED blnk state 
+bool blinkState = false;
+
+void ActivityBlink() {
+  if (millis() - lastBlink > 50) {
+    // Alternate LED state with a maximum frequency cap
+    blinkState = !blinkState;
+    lastBlink = millis();
+    digitalWrite(LED_PIN, blinkState);
+  }
+}
+
 void LEDOn() { digitalWrite(LED_PIN, HIGH); }
 
 void LEDOff() { digitalWrite(LED_PIN, LOW); }

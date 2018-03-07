@@ -67,11 +67,6 @@ void loop() {
         GyroPlanePacket[11]++;
 
         // Blink LED to indicate activity
-        if (millis() - lastBlink > 50) {
-          // Alternate LED state with a maximum frequency cap
-          blinkState = !blinkState;
-          lastBlink = millis();
-          digitalWrite(LED_PIN, blinkState);
-        }
+        ActivityBlink();
     }
 }

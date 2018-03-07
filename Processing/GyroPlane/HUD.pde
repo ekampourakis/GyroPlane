@@ -99,8 +99,8 @@ void DrawHUD() {
   fill(255); // White
   text("Offsets", 800, height - 80, 200, 20);
   fill(16, 255, 16); // Green
-  text("Y: " + YawOffset, 800, height - 60, 200, 20);
-  
+  //text("Y: " + YawOffset, 800, height - 60, 200, 20);
+  text("Angle: " + int(int((Gravity[1] >= 0 ? 0 : 180)) + degrees(asin(Gravity[2]))), 800, height - 60, 200, 20);
 }
 
 void DrawButtons() {

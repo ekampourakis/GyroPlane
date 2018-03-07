@@ -1,0 +1,8 @@
+Arduino Libraries:
+
+I2Cdev
+MPU6050
+
+Processing Libraries:
+
+ToxicLibs

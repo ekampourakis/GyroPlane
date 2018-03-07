@@ -23,11 +23,6 @@ uint16_t fifoCount;
 // FIFO storage buffer
 uint8_t fifoBuffer[64];
 
-// Time keeping variable for capping LED blinking frequency
-unsigned long lastBlink = 0;
-// Last LED blnk state 
-bool blinkState = false;
-
 // Quaternion container [w, x, y, z]
 Quaternion q;
 
@@ -60,11 +55,14 @@ void InitMPU() {
   }
   devStatus = mpu.dmpInitialize();
   
-  // Supply your own gyro offsets here, scaled for min sensitivity
-  mpu.setXGyroOffset(220);
-  mpu.setYGyroOffset(76);
-  mpu.setZGyroOffset(-85);
-  mpu.setZAccelOffset(1788); // 1688 factory default for my test chip
+  // Supply your own gyro offsets here
+  // Run IMU_ZERO.ino sketch to find yours
+  mpu.setXGyroOffset(115);
+  mpu.setYGyroOffset(-34);
+  mpu.setZGyroOffset(-26);
+  mpu.setZAccelOffset(1679);
+  mpu.setXAccelOffset(-1559);
+  mpu.setYAccelOffset(-1399);
   
   // Make sure it worked (returns 0 if so)
   if (devStatus == 0) {
