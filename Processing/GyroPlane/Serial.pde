@@ -54,7 +54,10 @@ void serialEvent(Serial Port) {
           
           // Set our Toxilibs quaternion to new data
           Quat.set(q[0], q[1], q[2], q[3]);
-  
+          
+          // If we are logging data, log received data
+          if (Logging) { Log(q); }
+          
           // Calculate the receive frequency
           Frequency = 1000 / (millis() - LastPacket);
           LastPacket = millis();
@@ -76,7 +79,7 @@ void serialEvent(Serial Port) {
       }
     } 
   } catch(RuntimeException e) {
-    // Print that something happened
+    // Print that something happened but ignore it
     println("Runtime exception occured. Continuing...");
   }
 }

@@ -101,6 +101,18 @@ void DrawHUD() {
   fill(16, 255, 16); // Green
   //text("Y: " + YawOffset, 800, height - 60, 200, 20);
   text("Angle: " + int(int((Gravity[1] >= 0 ? 0 : 180)) + degrees(asin(Gravity[2]))), 800, height - 60, 200, 20);
+  
+  // Display logging information
+  fill(255); // White
+  text("Logging", 900, height - 80, 200, 20);
+  if (Logging) {
+    fill(16, 255, 16); // Green
+  } else {
+    fill(255, 16, 32); // Red
+  }
+  text(Logging ? "Capturing" : "Stopped", 900, height - 60, 200, 20);
+  fill(255); // White
+  text("Frames: " + FrameCount, 900, height - 40, 200, 20);
 }
 
 void DrawButtons() {
@@ -129,6 +141,21 @@ void DrawButtons() {
   textSize(16);
   text(ShowAxes ? "Hide Axes" : "Show Axes", width - 180 - 10, height - 140 - 10, 180, 40);
   
+  // Draw logging button
+  fill(255, 255, 0); // Yellow
+  rect(width - 180 - 10, height - 190 - 10, 180, 40, 15);
+  fill(0); // Black
+  textAlign(CENTER, CENTER);
+  textSize(16);
+  text(Logging ? "Stop Log" : "Start Log", width - 180 - 10, height - 190 - 10, 180, 40);
+  
+  // Draw save log button
+  fill(255, 255, 0); // Yellow
+  rect(width - 180 - 10, height - 240 - 10, 180, 40, 15);
+  fill(0); // Black
+  textAlign(CENTER, CENTER);
+  textSize(16);
+  text("Export Log", width - 180 - 10, height - 240 - 10, 180, 40);
 }
 
 void DrawAxes(int Length, boolean Negative) {

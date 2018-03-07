@@ -42,3 +42,5 @@ int serialCount = 0;
 boolean Synced = false;
 // The quaternion data. 'q' used for code simplification
 float[] q = new float[4];
+
+boolean Logging = false;

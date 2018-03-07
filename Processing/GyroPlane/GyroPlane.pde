@@ -34,6 +34,10 @@ void mouseClicked() {
     ShowHUD = false;
   } else if (mouseX > (width - 180 - 10) && mouseX < (width - 10) && mouseY > (height - 140 - 10) && mouseY < (height - 110)) {
     ShowAxes = !ShowAxes;
+  } else if (mouseX > (width - 180 - 10) && mouseX < (width - 10) && mouseY > (height - 190 - 10) && mouseY < (height - 160)) {
+    Logging = !Logging;
+  } else if (mouseX > (width - 180 - 10) && mouseX < (width - 10) && mouseY > (height - 240 - 10) && mouseY < (height - 210)) {
+    SaveLog("Logs/GyroLog - " + CurrentStamp() + ".csv");
   } else {
     ShowHUD = true;
   }  
