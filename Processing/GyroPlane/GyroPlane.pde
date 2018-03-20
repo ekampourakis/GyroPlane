@@ -15,7 +15,7 @@ void setup() {
   println(Serial.list());
   
   // Connect to serial port
-  port = new Serial(this, "COM7", 115200);
+  //port = new Serial(this, "COM7", 115200);
   
 }
 
@@ -73,8 +73,12 @@ void draw() {
   // Adding yaw offset when using ToxicLibs direct axis rotation 
   // zeros the yaw location but breaks the pitch and roll rotation
   rotateY(YawOffset);
+
+  if (PlaybackActive) {
+    DoPlayback();
+  }
   
-  if (ShowAxes) {
+  if (ShowAxes && !PlaybackActive) {
     // Draw the system axes with negative values
     DrawAxes(300, true);
   }
