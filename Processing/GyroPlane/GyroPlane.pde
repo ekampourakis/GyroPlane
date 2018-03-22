@@ -42,6 +42,7 @@ void mouseClicked() {
     ShowHUD = true;
   }  
   
+  PlaybackBarHandler();
 }
 
 void draw() {
@@ -98,4 +99,5 @@ void draw() {
   // Pop the viewport transformation matrix from the stack
   popMatrix();
   
+  DrawTimeBar();
 }
