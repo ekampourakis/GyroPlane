@@ -13,6 +13,8 @@ boolean RequiresPlayback = false;
 
 float[] StreamQuat = new float[4];
 
+int PlaybackDelay = 1;
+
 void InitializeStream(String PlaybackFile) {
   if (!StreamInitialized) {
     // Load table from file 

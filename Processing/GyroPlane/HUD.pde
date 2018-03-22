@@ -117,13 +117,13 @@ void DrawHUD() {
 
 void DrawButtons() {
   
-  // Draw reset yaw offset button
+  // Draw open playback button
   fill(255, 255, 0); // Yellow
   rect(width - 180 - 10, height - 40 - 10, 180, 40, 15);
   fill(0); // Black
   textAlign(CENTER, CENTER);
   textSize(16);
-  text("Reset Yaw", width - 180 - 10, height - 40 - 10, 180, 40);
+  text("Playback", width - 180 - 10, height - 40 - 10, 180, 40);
 
   // Draw hide HUD button
   fill(255, 255, 0); // Yellow
