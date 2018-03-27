@@ -66,10 +66,12 @@ void serialEvent(Serial Port) {
           Gravity[0] = 2 * (q[1] * q[3] - q[0] * q[2]);
           Gravity[1] = 2 * (q[0] * q[1] + q[2] * q[3]);
           Gravity[2] = q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3];
+          
           // Calculate Euler angles
           Euler[0] = atan2(2 * q[1] * q[2] - 2 * q[0] * q[3], 2 * q[0] * q[0] + 2 * q[1] * q[1] - 1);
           Euler[1] = -asin(2 * q[1] * q[3] + 2 * q[0] * q[2]);
           Euler[2] = atan2(2 * q[2] * q[3] - 2 * q[0] * q[1], 2 * q[0] * q[0] + 2 * q[3] * q[3] - 1);
+          
           // Calculate yaw/pitch/roll angles
           ypr[0] = atan2(2 * q[1] * q[2] - 2 * q[0] * q[3], 2 * q[0] * q[0] + 2 * q[1] * q[1] - 1);
           ypr[1] = atan(Gravity[0] / sqrt(Gravity[1] * Gravity[1] + Gravity[2] * Gravity[2]));

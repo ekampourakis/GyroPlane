@@ -21,12 +21,14 @@ void InitializePlayer() {
 }
 
 void DrawPlayer() {
+  cam.beginHUD();
   // Draw close button
   CloseButton.Draw();
   // Draw timebar
   DrawTimeBar();
   // Draw frame counter
   DrawTimeInfo();
+  cam.endHUD();
 }
 
 

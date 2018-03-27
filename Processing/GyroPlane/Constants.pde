@@ -7,12 +7,15 @@ import toxi.processing.*;
 int IndicatorFPS = 10;
 float CalibrationSensitivity = 0.015;
 int DisconnectedInterval = 500;
-float m = 4.0; // Graphics size multiplier
+float m = 1.0; // Graphics size multiplier
 
 // Declarations
 ToxiclibsSupport gfx;
 Serial port; 
 Quaternion Quat = new Quaternion(1, 0, 0, 0);
+Quaternion Off = new Quaternion(1, 0, 0, 0);
+Quaternion Tra = new Quaternion(1, 0, 0, 0);
+ReadonlyVec3D Yy = new Vec3D(0, 1, 0);
 
 // Variables
 float[] Gravity = new float[3];

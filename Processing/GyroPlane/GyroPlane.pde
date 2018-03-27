@@ -1,7 +1,11 @@
+import peasy.PeasyCam;
+
+PeasyCam cam;
+
 void setup() {
   
   // Initialize window and graphics
-  size(1280, 800, P3D);
+  size(1440, 800, P3D);
   
   // Initialize ToxicLib graphics
   gfx = new ToxiclibsSupport(this);
@@ -15,9 +19,24 @@ void setup() {
   println(Serial.list());
   
   // Connect to serial port
-  //port = new Serial(this, "COM7", 115200);
+  port = new Serial(this, "COM5", 115200);
+  
+  cam = new PeasyCam(this, width / 2, height / 2, 0, 250 * m);
+  cam.setMaximumDistance(500 * m);
   
   InitializePlayer();
+  
+}
+
+boolean Offset = false;
+
+float of = 0;
+
+void keyPressed() {
+  Offset = true;
+  //Off.set(Quat.getConjugate());
+  of += PI/2;
+  Tra = Quaternion.createFromAxisAngle(Vec3D.Z_AXIS, of);
   
 }
 
@@ -51,6 +70,8 @@ void draw() {
   
   if (!PlayerVisible) {
     // If not doing playback
+    cam.beginHUD();
+
     if (ShowHUD) {
       // Draw the indicators
       DrawHUD();
@@ -58,17 +79,18 @@ void draw() {
       // Draw the buttons
       DrawButtons();
     }
-    
+    cam.endHUD();
     // Push new transformation matrix on the stack for centering viewport
     pushMatrix();
     
     // Set the center of the screen as coordinates origin
     translate(width / 2, height / 2); 
-      
+    
     // ToxicLibs direct angle/axis rotation from quaternion (NO gimbal lock!)
     // Axis order [1, 3, 2] and inversion [-1, +1, +1] is a consequence of
     // different coordinate system orientation assumptions
-    float[] axis = Quat.toAxisAngle();
+    
+    float[] axis = Tra.multiply(Off.multiply(Quat)).toAxisAngle();
     rotate(axis[0], -axis[1], axis[3], axis[2]);
   
     if (PlaybackActive) {
@@ -77,7 +99,7 @@ void draw() {
     
     if (ShowAxes && !PlaybackActive) {
       // Draw the system axes with negative values
-      DrawAxes(300, true);
+      DrawAxes(115 * m, true);
     }
     
     // Draw the plane after rotation

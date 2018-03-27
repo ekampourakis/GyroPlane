@@ -9,7 +9,7 @@ void DrawPlane() {
   pushMatrix();
   translate(0, 0, -120 * m);
   rotateX(PI/2);
-  DrawCylinder(0, 10 * m, 20 * m, int(8 * m));
+  DrawCylinder(0, 10 * m, 20 * m, 16);
   popMatrix();
   
   // Draw wings and tail fin in green

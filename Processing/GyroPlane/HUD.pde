@@ -56,6 +56,8 @@ void DrawHUD() {
 
   // Display latest quaternions at the bottom left corner
   textAlign(LEFT);
+  fill(255); // White
+  text("Quaternions", 2, height - 100, 200, 20);
   fill(255, 16, 32); // Red
   text("X: " + Quat.x, 2, height - 80, 200, 20);
   fill(16, 255, 16); // Green
@@ -65,54 +67,59 @@ void DrawHUD() {
   fill(255); // White
   text("W: " + Quat.w, 2, height - 20, 200, 20);
   
-  // Display latest gravity vectors at the bottome left corner
+    // Display angle offsets
   fill(255); // White
-  text("Gravity", 200, height - 80, 200, 20);
+  text("Conjugates", 200, height - 100, 200, 20);
   fill(255, 16, 32); // Red
-  text("X: " + -Gravity[0], 200, height - 60, 200, 20);
+  text("X: " + Off.x, 200, height - 80, 200, 20);
   fill(16, 255, 16); // Green
-  text("Y: " + Gravity[2], 200, height - 40, 200, 20);
+  text("Y: " + Off.y, 200, height - 60, 200, 20);
   fill(16, 128, 255); // Blue
-  text("Z: " + Gravity[1], 200, height - 20, 200, 20);
+  text("Z: " + Off.z, 200, height - 40, 200, 20);
+  fill(255); // White
+  text("W: " + Off.w, 200, height - 20, 200, 20);
   
-  // Display latest Euler angles at the bottome left corner
+  // Display latest gravity vectors at the bottom left corner
   fill(255); // White
-  text("Euler", 400, height - 80, 200, 20);
+  text("Gravity", 400, height - 80, 200, 20);
   fill(255, 16, 32); // Red
-  text("X: " + Euler[0], 400, height - 60, 200, 20);
+  text("X: " + -Gravity[0], 400, height - 60, 200, 20);
   fill(16, 255, 16); // Green
-  text("Y: " + Euler[1], 400, height - 40, 200, 20);
+  text("Y: " + Gravity[2], 400, height - 40, 200, 20);
   fill(16, 128, 255); // Blue
-  text("Z: " + Euler[2], 400, height - 20, 200, 20);
+  text("Z: " + Gravity[1], 400, height - 20, 200, 20);
+  
+  // Display latest Euler angles at the bottom left corner
+  fill(255); // White
+  text("Euler", 600, height - 80, 200, 20);
+  fill(255, 16, 32); // Red
+  text("X: " + Euler[0], 600, height - 60, 200, 20);
+  fill(16, 255, 16); // Green
+  text("Y: " + Euler[1], 600, height - 40, 200, 20);
+  fill(16, 128, 255); // Blue
+  text("Z: " + Euler[2], 600, height - 20, 200, 20);
   
   // Display latest yaw/pitch/roll angles
   fill(255); // White
-  text("Yaw/Pitch/Roll", 600, height - 80, 200, 20);
+  text("Yaw/Pitch/Roll", 800, height - 80, 200, 20);
   fill(16, 255, 16); // Green
-  text("Y: " + ypr[0], 600, height - 60, 200, 20);
+  text("Y: " + ypr[0], 800, height - 60, 200, 20);
   fill(255, 16, 32); // Red
-  text("P: " + ypr[2], 600, height - 40, 200, 20);
+  text("P: " + ypr[2], 800, height - 40, 200, 20);
   fill(16, 128, 255); // Blue
-  text("R: " + ypr[1], 600, height - 20, 200, 20);
-  
-  // Display angle offsets
-  fill(255); // White
-  text("Offsets", 800, height - 80, 200, 20);
-  fill(16, 255, 16); // Green
-  //text("Y: " + YawOffset, 800, height - 60, 200, 20);
-  text("Angle: " + int(int((Gravity[1] >= 0 ? 0 : 180)) + degrees(asin(Gravity[2]))), 800, height - 60, 200, 20);
+  text("R: " + ypr[1], 800, height - 20, 200, 20);
   
   // Display logging information
   fill(255); // White
-  text("Logging", 900, height - 80, 200, 20);
+  text("Logging", 1000, height - 80, 200, 20);
   if (Logging) {
     fill(16, 255, 16); // Green
   } else {
     fill(255, 16, 32); // Red
   }
-  text(Logging ? "Capturing" : "Stopped", 900, height - 60, 200, 20);
+  text(Logging ? "Capturing" : "Stopped", 1000, height - 60, 200, 20);
   fill(255); // White
-  text("Frames: " + FrameCount, 900, height - 40, 200, 20);
+  text("Frames: " + FrameCount, 1000, height - 40, 200, 20);
 }
 
 void DrawButtons() {
@@ -158,7 +165,7 @@ void DrawButtons() {
   text("Export Log", width - 180 - 10, height - 240 - 10, 180, 40);
 }
 
-void DrawAxes(int Length, boolean Negative) {
+void DrawAxes(float Length, boolean Negative) {
   strokeWeight(2);
   stroke(255, 0, 0); // Red
   line(Negative ? -Length : 0, 0, 0, Length, 0, 0);
@@ -168,7 +175,7 @@ void DrawAxes(int Length, boolean Negative) {
   pushMatrix();
   translate(Length, 0, 0);
   rotateZ(PI/2);
-  DrawCylinder(0, 6, 8, 8);
+  DrawCylinder(0, 3 * m, 4 * m, 8);
   popMatrix();  
   strokeWeight(2);
   stroke(0, 255, 0); // Green
@@ -179,7 +186,7 @@ void DrawAxes(int Length, boolean Negative) {
   pushMatrix();
   translate(0, Length, 0);
   rotateX(PI);
-  DrawCylinder(0, 6, 8, 8);
+  DrawCylinder(0, 3 * m, 4 * m, 8);
   popMatrix();
   strokeWeight(2);
   stroke(0, 0, 255); // Blue
@@ -190,6 +197,6 @@ void DrawAxes(int Length, boolean Negative) {
   pushMatrix();
   translate(0, 0, Length);
   rotateX(-PI/2);
-  DrawCylinder(0, 6, 8, 8);
+  DrawCylinder(0, 3 * m, 4 * m, 8);
   popMatrix();
 }
