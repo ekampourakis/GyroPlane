@@ -23,11 +23,9 @@ uint16_t fifoCount;
 // FIFO storage buffer
 uint8_t fifoBuffer[64];
 
-// Quaternion container [w, x, y, z]
-Quaternion q;
-
-// Packet structure for GyroPlane demo
-uint8_t GyroPlanePacket[14] = {'$', 0x02, 0,0, 0,0, 0,0, 0,0, 0x00, 0x00, '\r', '\n'};
+// Packet structure
+uint8_t GyroPlanePacket[18] = {'$', 0x02, 0,0, 0,0, 0,0, 0,0, 0,0,0,0, 0x00, 0x00, '\r', '\n'};
+//uint8_t GyroPlanePacket[14] = {'$', 0x02, 0,0, 0,0, 0,0, 0,0, 0x00, 0x00, '\r', '\n'};
 
 // Indicates whether MPU interrupt pin has gone high
 volatile bool mpuInterrupt = false;
@@ -90,7 +88,7 @@ void InitMPU() {
   }
   
   // Blinking pattern to indicate successful MPU initialization
-  LongBlink(1, 600);
+  LongBlink(1, 500);
   ShortBlink(2, 150);
   
 }

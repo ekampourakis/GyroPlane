@@ -40,8 +40,8 @@ int MaxDots = 10;
 
 // Serial variables
 // GyroPlane byte sequence format
-// { '$' , 0x02 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0x00 , 0x00 , '\r' , '\n' }
-char[] GyroPacket = new char[14];
+// { '$' , 0x02 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0x00 , 0x00 , '\r' , '\n' }
+char[] GyroPacket = new char[18];
 // Current packet byte position
 int serialCount = 0;
 // Synchronization flag

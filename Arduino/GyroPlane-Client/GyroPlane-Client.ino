@@ -56,15 +56,23 @@ void loop() {
         GyroPlanePacket[7] = fifoBuffer[9];
         GyroPlanePacket[8] = fifoBuffer[12];
         GyroPlanePacket[9] = fifoBuffer[13];
+
+        // Bit shift to split 32bit unsigned long into 4 bytes
+        // Will overflow every ~40 minutes and is precise to about 4uS
+        unsigned long Time = micros();
+        GyroPlanePacket[10] = Time & 255;
+        GyroPlanePacket[11] = (Time >> 8) & 255;
+        GyroPlanePacket[12] = (Time >> 16) & 255;
+        GyroPlanePacket[13] = (Time >> 24) & 255;
         
         // Create temporary byte array to store the data for transmission
-        byte RX[14];
+        byte RX[18];
         // Transfer all to temporary byte array for loss protection
-        for (int i = 0; i < 14; i++) { RX[i] = GyroPlanePacket[i]; }
-        // Transmit the 14 byte container via radio
+        for (int i = 0; i < 18; i++) { RX[i] = GyroPlanePacket[i]; }
+        // Transmit the 18 byte container via radio
         radio.write(&RX, sizeof(RX));
         // Increment packetCount that loops at 0xFF on purpose
-        GyroPlanePacket[11]++;
+        GyroPlanePacket[15]++;
 
         // Blink LED to indicate activity
         ActivityBlink();

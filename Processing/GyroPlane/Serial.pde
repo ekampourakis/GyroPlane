@@ -15,14 +15,13 @@ void serialEvent(Serial Port) {
       
       // Read next available byte
       int RX = Port.read(); 
-      // If bytes as not in sync and last received byte is not the alignation byte '$' quit
+      // If bytes are not in sync and last received byte is not the alignation byte '$' quit
       if (!Synced && RX != '$') { return; }
-      
       // Suppose we are in sync
       Synced = true;
     
       // If the format of the currently receiving byte sequence is not right
-      if ((serialCount == 1 && RX != 2) || (serialCount == 12 && RX != '\r') || (serialCount == 13 && RX != '\n'))  {
+      if ((serialCount == 1 && RX != 2) || (serialCount == 16 && RX != '\r') || (serialCount == 17 && RX != '\n'))  {
         // Reset the byte receiving procedure and quit because we lost sync
         serialCount = 0;
         Synced = false;
@@ -34,12 +33,11 @@ void serialEvent(Serial Port) {
         // Store current byte and increment the received byte counter
         GyroPacket[serialCount++] = (char)RX;
         
-        // If we successfully received all 14 required bytes
-        if (serialCount == 14) {
+        // If we successfully received all 18 required bytes
+        if (serialCount == 18) {
           
           // Restart received byte counter
           serialCount = 0;
-          
           // Decode quaternion from data packets
           // The raw received data come in 16bit containers with data stored in 2s complement.
           // Left shift 8 places the first 8bit container in the 16bit variable to make them the MSB
@@ -50,6 +48,13 @@ void serialEvent(Serial Port) {
           q[1] = ((GyroPacket[4] << 8) | GyroPacket[5]) / 16384.0f;
           q[2] = ((GyroPacket[6] << 8) | GyroPacket[7]) / 16384.0f;
           q[3] = ((GyroPacket[8] << 8) | GyroPacket[9]) / 16384.0f;
+         
+          // Decode module timestamp from data packets
+          // The raw received data contains an unsigned long of 32bits split into 4 bytes.
+          // Shift and bitwise or the 4 bytes into 1 long container
+          long LastTimestamp = (GyroPacket[13] << 24 | GyroPacket[12] << 16 | GyroPacket[11] << 8 | GyroPacket[10]);
+
+          // Map incorrect quaternion values
           for (int i = 0; i < 4; i++) if (q[i] >= 2) q[i] = -4 + q[i];
           
           // Set our Toxilibs quaternion to new data

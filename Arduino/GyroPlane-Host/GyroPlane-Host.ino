@@ -19,7 +19,7 @@ void InitRadio() {
 }
 
 // Received radio data container
-byte RX[14] = {0};
+byte RX[18] = {0};
 
 void setup() {
   // Begin serial at rate specified by Processing
@@ -31,10 +31,10 @@ void setup() {
 void loop() {
   // If there are radio data available
   if (radio.available()) {
-    // Receive 14 bytes of data
+    // Receive 18 bytes of data
     radio.read(&RX, sizeof(RX));
     // Forward those bytes to Processing
-    Serial.write(RX, 14);
+    Serial.write(RX, 18);
     // Wait for transmission to complete
     Serial.flush();
   }
