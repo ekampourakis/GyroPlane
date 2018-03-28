@@ -1,0 +1,16 @@
+Processing:
+* Prototype step by step playback code
+* Miniaturize GUI buttons
+* Create key shortcuts for GUI buttons
+* Create hidden GUI that pops up with mouse hover over the region
+* Add simple graphing for raw values taken from the sensor
+* Add export graph functions as CSV or image
+
+Arduino:
+* Optimize sample rate by changing the radio timeout and payload size to match packet's requirements
+* Include raw accelerometer and gyroscope values in the packet as 12 extra bytes
+* Create universal radio addresses to interface with more than 1 module
+* Create handlers for the new radio shield's button and LED
+
+Hardware:
+* Create schematic for the new radio shield for the Mega
