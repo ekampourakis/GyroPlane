@@ -2,6 +2,8 @@ import peasy.PeasyCam;
 
 PeasyCam cam;
 
+int Width, Height = 0;
+
 void setup() {
   
   // Initialize window and graphics
@@ -21,7 +23,10 @@ void setup() {
   // Connect to serial port
   //port = new Serial(this, "COM10", 115200);
   
-  cam = new PeasyCam(this, width / 2, height / 2, 0, 250 * m);
+  Width = width;
+  Height = height;
+  
+  cam = new PeasyCam(this, Width / 2, Height / 2, 0, 250 * m);
   cam.setMaximumDistance(500 * m);
   
   InitializePlayer();
@@ -44,8 +49,8 @@ void mouseClicked() {
   
   // If mouse coordinates are inside button's bounds
   if (mouseX > (width - 180 - 10) && mouseX < (width - 10) && mouseY > (height - 40 - 10) && mouseY < (height - 10)) {
-    PlayerVisible = true;
-    TempInit();
+    //PlayerVisible = true;
+    selectInput("Select a file to playback:", "InitializeStream");
   } else if (mouseX > (width - 180 - 10) && mouseX < (width - 10) && mouseY > (height - 90 - 10) && mouseY < (height - 60)) {
     ShowHUD = false;
   } else if (mouseX > (width - 180 - 10) && mouseX < (width - 10) && mouseY > (height - 140 - 10) && mouseY < (height - 110)) {
@@ -68,6 +73,13 @@ float[] toRotate = {0, 0, 0, 0};
 
 void draw() {
     
+  if (Width != width || Height != height) {
+    Width = width;
+    Height = height;
+    cam = new PeasyCam(this, Width / 2, Height / 2, 0, 250 * m);
+    cam.setMaximumDistance(500 * m);
+  }
+  
   // Black canvas
   background(0);
   

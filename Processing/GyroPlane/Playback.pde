@@ -15,12 +15,13 @@ float[] StreamQuat = new float[4];
 
 int PlaybackDelay = 1;
 
-void InitializeStream(String PlaybackFile) {
-  if (!StreamInitialized) {
+void InitializeStream(File selection) {
+  if (selection != null) {
     // Load table from file 
-    StreamTable = loadTable(PlaybackFile);
+    StreamTable = loadTable(selection.getAbsolutePath());
     TotalStreamFrames = StreamTable.getRowCount() - 1;
     StreamInitialized = true;
+    PlayerVisible = true;
   }
 }
 
@@ -29,7 +30,7 @@ void CloseStream() {
 }
 
 void TempInit() {
-  InitializeStream("log.csv");
+  //InitializeStream("log.csv");
 }
 
 void DoPlayback() {

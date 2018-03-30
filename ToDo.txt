@@ -1,5 +1,4 @@
 Processing:
-* Prototype step by step playback code
 * Miniaturize GUI buttons
 * Create key shortcuts for GUI buttons
 * Create hidden GUI that pops up with mouse hover over the region
