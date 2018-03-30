@@ -19,7 +19,7 @@ void setup() {
   println(Serial.list());
   
   // Connect to serial port
-  port = new Serial(this, "COM5", 115200);
+  //port = new Serial(this, "COM10", 115200);
   
   cam = new PeasyCam(this, width / 2, height / 2, 0, 250 * m);
   cam.setMaximumDistance(500 * m);
@@ -45,6 +45,7 @@ void mouseClicked() {
   // If mouse coordinates are inside button's bounds
   if (mouseX > (width - 180 - 10) && mouseX < (width - 10) && mouseY > (height - 40 - 10) && mouseY < (height - 10)) {
     PlayerVisible = true;
+    TempInit();
   } else if (mouseX > (width - 180 - 10) && mouseX < (width - 10) && mouseY > (height - 90 - 10) && mouseY < (height - 60)) {
     ShowHUD = false;
   } else if (mouseX > (width - 180 - 10) && mouseX < (width - 10) && mouseY > (height - 140 - 10) && mouseY < (height - 110)) {
@@ -62,6 +63,8 @@ void mouseClicked() {
   PlayerCloseHandler();
   PlaybackButtonsHandler();
 }
+
+float[] toRotate = {0, 0, 0, 0};
 
 void draw() {
     
@@ -90,12 +93,9 @@ void draw() {
     // Axis order [1, 3, 2] and inversion [-1, +1, +1] is a consequence of
     // different coordinate system orientation assumptions
     
-    float[] axis = Tra.multiply(Off.multiply(Quat)).toAxisAngle();
-    rotate(axis[0], -axis[1], axis[3], axis[2]);
-  
-    if (PlaybackActive) {
-      DoPlayback();
-    }
+    //float[] axis = Tra.multiply(Off.multiply(Quat)).toAxisAngle();
+    rotate(toRotate[0], -toRotate[1], toRotate[3], toRotate[2]);
+    
     
     if (ShowAxes && !PlaybackActive) {
       // Draw the system axes with negative values

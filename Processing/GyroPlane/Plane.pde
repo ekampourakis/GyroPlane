@@ -1,6 +1,8 @@
 void DrawPlane() {
+  // Set outline color
+  stroke(0); // Black
   
-   // Draw main body in red
+  // Draw main body in red
   fill(255, 0, 0);
   box(10 * m, 10 * m, 200 * m);
   

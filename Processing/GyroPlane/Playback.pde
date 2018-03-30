@@ -5,7 +5,7 @@ long RealtimeFrameDelay = 0;
 
 int CurrentStreamFrame = 0;
 
-private int TotalStreamFrames;
+int TotalStreamFrames = 0;
 
 Table StreamTable;
 
@@ -18,7 +18,6 @@ int PlaybackDelay = 1;
 void InitializeStream(String PlaybackFile) {
   if (!StreamInitialized) {
     // Load table from file 
-    // TotalStreamFrames = something;
     StreamTable = loadTable(PlaybackFile);
     TotalStreamFrames = StreamTable.getRowCount() - 1;
     StreamInitialized = true;
@@ -29,24 +28,25 @@ void CloseStream() {
   if (StreamInitialized) { StreamInitialized = false; }
 }
 
+void TempInit() {
+  InitializeStream("log.csv");
+}
+
 void DoPlayback() {
-  InitializeStream("data/Test.log");
   // here create a select mode block
   // for now just call realtime
   Realtime();
   if (RequiresPlayback) {
-    rotate(StreamQuat[0], -StreamQuat[1], StreamQuat[3], StreamQuat[2]);
+    rotate(toRotate[0], -toRotate[1], toRotate[3], toRotate[2]);
   }
 }
-
-int StreamFrames() { return TotalStreamFrames; }
 
 boolean NextFrame() { return ForwardFrames(1); }
 
 void PreviousFrame() { BackwardFrames(1); }
 
 long GetFrameDelay(int Frame) {
-  if (StreamFrames() > Frame + 1) { return (StreamTable.getRow(Frame + 2).getLong("Timestamp") - StreamTable.getRow(Frame + 1).getLong("Timestamp")); }
+  if (TotalStreamFrames > Frame + 1) { return (StreamTable.getRow(Frame + 2).getLong(5) - StreamTable.getRow(Frame + 1).getLong(5)); }
   return 0;
 }
 
@@ -61,12 +61,10 @@ void Realtime() {
 
 boolean ForwardFrames(int Frames) {
   if (StreamInitialized) {
-    if (StreamFrames() > CurrentStreamFrame + Frames) {
+    if (TotalStreamFrames > CurrentStreamFrame + Frames) {
       TableRow TmpRow = StreamTable.getRow(CurrentStreamFrame + Frames + 1);
-      StreamQuat[0] = TmpRow.getFloat("X");
-      StreamQuat[1] = TmpRow.getFloat("Y");
-      StreamQuat[2] = TmpRow.getFloat("Z");
-      StreamQuat[3] = TmpRow.getFloat("W");
+      Quat.set(TmpRow.getFloat(1), TmpRow.getFloat(2), TmpRow.getFloat(3), TmpRow.getFloat(4));
+      toRotate = Tra.multiply(Off.multiply(Quat)).toAxisAngle();
       RequiresPlayback = true;
       return true;
     }

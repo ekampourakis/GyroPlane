@@ -1,4 +1,4 @@
-int PlaybackPercent = 0;
+//int PlaybackPercent = 0;
 boolean PlayerVisible = false;
 
 RoundButton CloseButton, FirstButton, PreviousButton, NextButton, PlayButton, HalfButton, QuarterButton;
@@ -21,6 +21,16 @@ void InitializePlayer() {
 }
 
 void DrawPlayer() {
+  pushMatrix();
+  translate(width / 2, height / 2); 
+  if (PlaybackActive) {
+    DoPlayback();
+  } 
+  DrawPlane();
+  popMatrix();
+  
+  
+  // Draw HUD top most
   cam.beginHUD();
   // Draw close button
   CloseButton.Draw();
@@ -31,9 +41,16 @@ void DrawPlayer() {
   cam.endHUD();
 }
 
+int GetPlaybackPermille() {
+  return ceil(1000 * (CurrentStreamFrame + 1) / TotalStreamFrames);
+}
 
 void DrawTimeInfo() {
-  
+  stroke(255); // White
+  fill(255); // White
+  textAlign(CENTER, CENTER);
+  textSize(16);  
+  text((CurrentStreamFrame + 1) + " / " + TotalStreamFrames, (width - 400) / 2, height - 90, 400, 20); // Add 1 cause its an array counter
 }
 
 void DrawTimeBar() {
@@ -44,7 +61,7 @@ void DrawTimeBar() {
   rect(20, height - 60, width - 40, 10, 5);
   // Fill played line
   fill(128); // Gray
-  float EndLoc = 20 + ((width - 40) * PlaybackPercent / 1000);
+  float EndLoc = 20 + ((width - 40) * GetPlaybackPermille() / 1000);
   rect(20, height - 60, EndLoc - 20, 10, 5);
   // Draw slider dot
   stroke(0);
@@ -58,7 +75,8 @@ void DrawTimeBar() {
 void PlaybackBarHandler() {
   // Handle click and or slide
   if (mouseX >= 20 && mouseX <= width - 20 && mouseY >= height - 60 && mouseY <= height - 50) {
-    PlaybackPercent = int(map(mouseX, 10, width - 20, 0, 1000));
+    //PlaybackPermille = int(map(mouseX, 10, width - 20, 0, 1000));
+    CurrentStreamFrame = floor(map(map(mouseX, 10, width - 20, 0, 1000), 0, 1000, 0, TotalStreamFrames));
   }
 }
 
@@ -90,7 +108,8 @@ void PlaybackButtonsHandler() {
   } else if (NextButton.MouseOver()) {
     
   } else if (PlayButton.MouseOver()) {
-    
+    PlaybackActive = !PlaybackActive;
+    println(PlaybackActive);
   } else if (HalfButton.MouseOver()) {
     PlaybackDelay = 2;
   } else if (QuarterButton.MouseOver()) {

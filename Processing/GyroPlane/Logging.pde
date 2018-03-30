@@ -36,8 +36,8 @@ void Log(float[] Quaternions) {
   TableRow newRow = LogTable.addRow();
   newRow.setInt("Frame", FrameCount++);
   newRow.setFloat("X", Quaternions[0]);
-  newRow.setFloat("Y", Quaternions[0]);
-  newRow.setFloat("Z", Quaternions[0]);
-  newRow.setFloat("W", Quaternions[0]);
+  newRow.setFloat("Y", Quaternions[1]);
+  newRow.setFloat("Z", Quaternions[2]);
+  newRow.setFloat("W", Quaternions[3]);
   newRow.setLong("Timestamp", millis());
 }
