@@ -5,8 +5,6 @@
 
 const uint8_t  QUEUE_SIZE = 70;
 
-MD_CirQueue Q(QUEUE_SIZE, sizeof(GyroPlanePacket));
-
 void setup() {
   // Initialize debug functions
   InitDebug();
@@ -15,9 +13,7 @@ void setup() {
   // Initialize the sensor
   InitMPU();
   Serial.begin(115200);
-  
-  Q.begin();
-  Q.setFullOverwrite(true);
+  MD_CirQueue Q(QUEUE_SIZE, sizeof(GyroPlanePacket));
 }
 
 unsigned long lastTX = 0;
@@ -28,16 +24,7 @@ void loop() {
 
     // Wait for MPU interrupt or for extra available packet(s)
     while (!mpuInterrupt && fifoCount < packetSize) {
-      // Put code here to run while waiting for data
-      if (Q.isFull()) { 
-        LEDOn(); 
-      }
-      byte TX[18];
-      Q.peek((uint8_t *) & TX);
-      bool Sent = radio.writeBlocking(&TX, sizeof(TX), 1);
-      if (Sent) { 
-        Q.pop((uint8_t *) & TX); 
-      }
+      // Put more code here to run while waiting for data
     }
 
     // Reset interrupt flag
@@ -92,12 +79,18 @@ void loop() {
 
         // Increment packetCount that loops at 0xFF on purpose
         GyroPlanePacket[15]++;
+        
+        // Transmit the 18 byte container via radio
+        bool t = radio.writeBlocking(&RX, sizeof(RX), 1);
 
-        // Push the RX in the circular transmission buffer
-        Q.push((uint8_t *) & RX);
+        
+        
 
         // Blink LED to indicate activity
         ActivityBlink();
-        
+        Serial.print(t);
+        Serial.print("\t");
+        Serial.println((micros() - lastTX));
+        lastTX = micros();
     }
 }
