@@ -1,7 +1,7 @@
 private boolean StreamInitialized = false;
 
 long LastRealtimeFrame = 0;
-long RealtimeFrameDelay = 0;
+float RealtimeFrameDelay = 0;
 
 int CurrentStreamFrame = 0;
 
@@ -55,7 +55,7 @@ void Realtime() {
   if (millis() > LastRealtimeFrame + RealtimeFrameDelay) {
     if (NextFrame()) {
       LastRealtimeFrame = millis();
-      RealtimeFrameDelay = GetFrameDelay(CurrentStreamFrame++); //maybe its frame + 1 to check but lets see
+      RealtimeFrameDelay = GetFrameDelay(CurrentStreamFrame++) * PlaybackDelay; //maybe its frame + 1 to check but lets see
     } 
   }
 }

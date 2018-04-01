@@ -31,7 +31,7 @@ void SaveLog(String Filename) {
   LogInitialized = false;
 }
 
-void Log(float[] Quaternions) {
+void Log(float[] Quaternions, long Timestamp) {
   if (!LogInitialized) { InitLog(); }
   TableRow newRow = LogTable.addRow();
   newRow.setInt("Frame", FrameCount++);
@@ -39,5 +39,5 @@ void Log(float[] Quaternions) {
   newRow.setFloat("Y", Quaternions[1]);
   newRow.setFloat("Z", Quaternions[2]);
   newRow.setFloat("W", Quaternions[3]);
-  newRow.setLong("Timestamp", millis());
+  newRow.setLong("Timestamp", Timestamp);
 }

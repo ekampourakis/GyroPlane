@@ -21,15 +21,16 @@ void InitializePlayer() {
 }
 
 void DrawPlayer() {
+  // Push new transformation matrix on the stack
   pushMatrix();
+  // Make the center of the screen the new origin
   translate(width / 2, height / 2); 
   if (PlaybackActive) {
     DoPlayback();
   } 
   DrawPlane();
-  popMatrix();
-  
-  
+  // Pop the matrix from the stack and go back to normal origin for the HUD
+  popMatrix();  
   // Draw HUD top most
   cam.beginHUD();
   // Draw close button
@@ -102,14 +103,13 @@ void DrawTimeBarButtons() {
 void PlaybackButtonsHandler() {
   if (FirstButton.MouseOver()) {
     CurrentStreamFrame = 0;
-    // And also pause it
+    PlaybackActive = false;
   } else if (PreviousButton.MouseOver()) {
     
   } else if (NextButton.MouseOver()) {
     
   } else if (PlayButton.MouseOver()) {
     PlaybackActive = !PlaybackActive;
-    println(PlaybackActive);
   } else if (HalfButton.MouseOver()) {
     PlaybackDelay = 2;
   } else if (QuarterButton.MouseOver()) {
