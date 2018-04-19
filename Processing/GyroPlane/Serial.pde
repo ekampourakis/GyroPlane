@@ -61,7 +61,9 @@ void serialEvent(Serial Port) {
           Quat.set(q[0], q[1], q[2], q[3]);
           
           // Set the rotation matrix to the newest values so when draw() is called it rotates to the latest values async
-          toRotate = Tra.multiply(Off.multiply(Quat)).toAxisAngle();
+          if (!PlayerVisible) {
+            toRotate = Tra.multiply(Off.multiply(Quat)).toAxisAngle();
+          }
           
           // If we are logging, log received data
           if (Logging) { Log(q, LastTimestamp); }

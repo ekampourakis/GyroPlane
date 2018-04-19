@@ -105,14 +105,26 @@ void PlaybackButtonsHandler() {
     CurrentStreamFrame = 0;
     PlaybackActive = false;
   } else if (PreviousButton.MouseOver()) {
-    
+    if (PreviousFrame()) {
+      CurrentStreamFrame--;
+    } 
   } else if (NextButton.MouseOver()) {
-    
+    if (NextFrame()) {
+      CurrentStreamFrame++;
+    }    
   } else if (PlayButton.MouseOver()) {
     PlaybackActive = !PlaybackActive;
   } else if (HalfButton.MouseOver()) {
-    PlaybackDelay = 2;
+    if (PlaybackDelay == 2) {
+      PlaybackDelay = 1;
+    } else {
+      PlaybackDelay = 2; 
+    }
   } else if (QuarterButton.MouseOver()) {
-    PlaybackDelay = 4;
+    if (PlaybackDelay == 4) {
+      PlaybackDelay = 1;
+    } else {   
+      PlaybackDelay = 4;
+    }
   }
 }
