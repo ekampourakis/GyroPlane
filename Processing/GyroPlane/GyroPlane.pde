@@ -21,7 +21,7 @@ void setup() {
   println(Serial.list());
   
   // Connect to serial port
-  //port = new Serial(this, "COM10", 115200);
+  port = new Serial(this, "COM10", 115200);
   
   Width = width;
   Height = height;
@@ -71,8 +71,13 @@ void mouseClicked() {
 
 float[] toRotate = {0, 0, 0, 0};
 
+//long l = 0;
+
 void draw() {
-    
+  
+  //println(millis() - l);
+  //l = millis();
+  
   if (Width != width || Height != height) {
     Width = width;
     Height = height;

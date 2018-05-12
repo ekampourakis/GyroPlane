@@ -58,8 +58,12 @@ void serialEvent(Serial Port) {
           for (int i = 0; i < 4; i++) if (q[i] >= 2) q[i] = -4 + q[i];
           
           // Set our Toxilibs quaternion to new data
-          Quat.set(q[0], q[1], q[2], q[3]);
-          toRotate = Tra.multiply(Off.multiply(Quat)).toAxisAngle();
+          if (!PlayerVisible) {
+            Quat.set(q[0], q[1], q[2], q[3]);
+            //toRotate = Tra.multiply(Off.multiply(Quat)).toAxisAngle();
+            toRotate = Quat.toAxisAngle();
+          }
+          
           
           // If we are logging data, log received data
           if (Logging) { Log(q); }
