@@ -58,16 +58,7 @@ void serialEvent(Serial Port) {
           for (int i = 0; i < 4; i++) if (q[i] >= 2) q[i] = -4 + q[i];
           
           // Set our Toxilibs quaternion to new data
-<<<<<<< HEAD
-          if (!PlayerVisible) {
-            Quat.set(q[0], q[1], q[2], q[3]);
-            //toRotate = Tra.multiply(Off.multiply(Quat)).toAxisAngle();
-            toRotate = Quat.toAxisAngle();
-          }
-          
-=======
           Quat.set(q[0], q[1], q[2], q[3]);
->>>>>>> 5424f73a6ce16cb55c9a186e25d8da2812c140d1
           
           // Set the rotation matrix to the newest values so when draw() is called it rotates to the latest values async
           if (!PlayerVisible) {

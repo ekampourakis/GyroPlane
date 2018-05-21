@@ -21,15 +21,7 @@ void setup() {
   println(Serial.list());
   
   // Connect to serial port
-<<<<<<< HEAD
-<<<<<<< HEAD
-  port = new Serial(this, "COM10", 115200);
-=======
-  port = new Serial(this, "COM5", 115200);
->>>>>>> 5424f73a6ce16cb55c9a186e25d8da2812c140d1
-=======
   port = new Serial(this, "COM6", 115200);
->>>>>>> fdf2a0670bba8b79ee1ece7e329cee599d2d12fb
   
   Width = width;
   Height = height;
@@ -79,13 +71,8 @@ void mouseClicked() {
 
 float[] toRotate = {0, 0, 0, 0};
 
-//long l = 0;
-
 void draw() {
-  
-  //println(millis() - l);
-  //l = millis();
-  
+    
   if (Width != width || Height != height) {
     // Store new size
     Width = width;
