@@ -62,12 +62,12 @@ void InitMPU() {
   
   // Supply your own gyro offsets here
   // Run IMU_ZERO.ino sketch to find yours
-  mpu.setXGyroOffset(115);
-  mpu.setYGyroOffset(-34);
-  mpu.setZGyroOffset(-26);
-  mpu.setZAccelOffset(1679);
-  mpu.setXAccelOffset(-1559);
-  mpu.setYAccelOffset(-1399);
+  mpu.setXAccelOffset(-1669);
+  mpu.setYAccelOffset(1569); 
+  mpu.setZAccelOffset(887);
+  mpu.setXGyroOffset(64);
+  mpu.setYGyroOffset(-33);
+  mpu.setZGyroOffset(4);  
   
   // Make sure it worked (returns 0 if so)
   if (devStatus == 0) {

@@ -36,9 +36,10 @@ void TempInit() {
 void DoPlayback() {
   // here create a select mode block
   // for now just call realtime
-  //Realtime();
+  Realtime();
   if (RequiresPlayback) {
     rotate(toRotate[0], -toRotate[1], toRotate[3], toRotate[2]);
+    RequiresPlayback = false;
   }
 }
 
@@ -47,7 +48,7 @@ boolean NextFrame() { return ForwardFrames(1); }
 boolean PreviousFrame() { return BackwardFrames(1); }
 
 long GetFrameDelay(int Frame) {
-  if (TotalStreamFrames > Frame + 1) { return (StreamTable.getRow(Frame + 2).getLong(5) - StreamTable.getRow(Frame + 1).getLong(5)); }
+  if (TotalStreamFrames > Frame + 1) { return (StreamTable.getRow(Frame + 2).getLong(5) - StreamTable.getRow(Frame + 1).getLong(5)) / 1000; } // be careful here as the returned delay is in micro not millis
   return 0;
 }
 
@@ -56,7 +57,7 @@ void Realtime() {
     if (NextFrame()) {
       LastRealtimeFrame = millis();
       RealtimeFrameDelay = GetFrameDelay(CurrentStreamFrame++) * PlaybackDelay; //maybe its frame + 1 to check but lets see
-    } 
+    }
   }
 }
 

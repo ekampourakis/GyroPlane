@@ -21,7 +21,7 @@ void setup() {
   println(Serial.list());
   
   // Connect to serial port
-  port = new Serial(this, "COM5", 115200);
+  port = new Serial(this, "COM6", 115200);
   
   Width = width;
   Height = height;
