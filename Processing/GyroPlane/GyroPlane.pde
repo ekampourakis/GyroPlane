@@ -21,7 +21,11 @@ void setup() {
   println(Serial.list());
   
   // Connect to serial port
+<<<<<<< HEAD
   port = new Serial(this, "COM10", 115200);
+=======
+  port = new Serial(this, "COM5", 115200);
+>>>>>>> 5424f73a6ce16cb55c9a186e25d8da2812c140d1
   
   Width = width;
   Height = height;
@@ -33,10 +37,9 @@ void setup() {
   
 }
 
+/*
 boolean Offset = false;
-
 float of = 0;
-
 void keyPressed() {
   Offset = true;
   //Off.set(Quat.getConjugate());
@@ -44,6 +47,7 @@ void keyPressed() {
   Tra = Quaternion.createFromAxisAngle(Vec3D.Z_AXIS, of);
   
 }
+*/
 
 void mouseClicked() { 
   
@@ -79,10 +83,14 @@ void draw() {
   //l = millis();
   
   if (Width != width || Height != height) {
+    // Store new size
     Width = width;
     Height = height;
+    // Give the new parameters to the camera
     cam = new PeasyCam(this, Width / 2, Height / 2, 0, 250 * m);
     cam.setMaximumDistance(500 * m);
+    // Re-calculate the location of the controls
+    InitializePlayer();
   }
   
   // Black canvas

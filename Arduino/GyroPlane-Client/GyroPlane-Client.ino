@@ -1,6 +1,11 @@
 #include "Debug.h" 
 #include "MPU.h"
 #include "Radio.h"
+#include "Circular_Queue.h"
+
+const uint8_t  QUEUE_SIZE = 70;
+
+MD_CirQueue Q(QUEUE_SIZE, sizeof(GyroPlanePacket));
 
 void setup() {
   // Initialize debug functions
@@ -9,7 +14,13 @@ void setup() {
   InitRadio();
   // Initialize the sensor
   InitMPU();
+  Serial.begin(115200);
+  
+  Q.begin();
+  Q.setFullOverwrite(true);
 }
+
+unsigned long lastTX = 0;
 
 void loop() {
     // If programming failed don't try to do anything
@@ -17,7 +28,16 @@ void loop() {
 
     // Wait for MPU interrupt or for extra available packet(s)
     while (!mpuInterrupt && fifoCount < packetSize) {
-      // Put more code here to run while waiting for data
+      // Put code here to run while waiting for data
+      if (Q.isFull()) { 
+        LEDOn(); 
+      }
+      byte TX[18];
+      Q.peek((uint8_t *) & TX);
+      bool Sent = radio.writeBlocking(&TX, sizeof(TX), 1);
+      if (Sent) { 
+        Q.pop((uint8_t *) & TX); 
+      }
     }
 
     // Reset interrupt flag
@@ -69,12 +89,15 @@ void loop() {
         byte RX[18];
         // Transfer all to temporary byte array for loss protection
         for (int i = 0; i < 18; i++) { RX[i] = GyroPlanePacket[i]; }
-        // Transmit the 18 byte container via radio
-        radio.write(&RX, sizeof(RX));
+
         // Increment packetCount that loops at 0xFF on purpose
         GyroPlanePacket[15]++;
 
+        // Push the RX in the circular transmission buffer
+        Q.push((uint8_t *) & RX);
+
         // Blink LED to indicate activity
         ActivityBlink();
+        
     }
 }

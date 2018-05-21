@@ -1,7 +1,7 @@
 private boolean StreamInitialized = false;
 
 long LastRealtimeFrame = 0;
-long RealtimeFrameDelay = 0;
+float RealtimeFrameDelay = 0;
 
 int CurrentStreamFrame = 0;
 
@@ -36,7 +36,7 @@ void TempInit() {
 void DoPlayback() {
   // here create a select mode block
   // for now just call realtime
-  Realtime();
+  //Realtime();
   if (RequiresPlayback) {
     rotate(toRotate[0], -toRotate[1], toRotate[3], toRotate[2]);
   }
@@ -44,7 +44,7 @@ void DoPlayback() {
 
 boolean NextFrame() { return ForwardFrames(1); }
 
-void PreviousFrame() { BackwardFrames(1); }
+boolean PreviousFrame() { return BackwardFrames(1); }
 
 long GetFrameDelay(int Frame) {
   if (TotalStreamFrames > Frame + 1) { return (StreamTable.getRow(Frame + 2).getLong(5) - StreamTable.getRow(Frame + 1).getLong(5)); }
@@ -55,7 +55,7 @@ void Realtime() {
   if (millis() > LastRealtimeFrame + RealtimeFrameDelay) {
     if (NextFrame()) {
       LastRealtimeFrame = millis();
-      RealtimeFrameDelay = GetFrameDelay(CurrentStreamFrame++); //maybe its frame + 1 to check but lets see
+      RealtimeFrameDelay = GetFrameDelay(CurrentStreamFrame++) * PlaybackDelay; //maybe its frame + 1 to check but lets see
     } 
   }
 }
@@ -73,7 +73,8 @@ boolean ForwardFrames(int Frames) {
   return false;  
 }
 
-void BackwardFrames(int Frames) {
+boolean BackwardFrames(int Frames) {
   // check if previous frame {Frames} exists
   // if it does call 
+  return false;
 }
