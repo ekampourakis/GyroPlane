@@ -3,41 +3,62 @@
 #include "Radio.h"
 #include "Circular_Queue.h"
 
-const uint8_t  QUEUE_SIZE = 70;
+// The size of the circular buffer
+// After 65 the buffer overflows with current 18 byte packet size
+#define CircularBufferSize 50
 
-MD_CirQueue Q(QUEUE_SIZE, sizeof(GyroPlanePacket));
+// The circular buffer in which we store the remaining packets
+MD_CirQueue Q(CircularBufferSize, sizeof(GyroPlanePacket));
+
+// The transmission status of the latest packet
+bool LastTX = false;
 
 void setup() {
+  
   // Initialize debug functions
   InitDebug();
+  
   // Initialize the radio
   InitRadio();
+  
   // Initialize the sensor
   InitMPU();
-  Serial.begin(115200);
   
+  // Initialize the circular buffer
   Q.begin();
   Q.setFullOverwrite(true);
-}
 
-unsigned long lastTX = 0;
+  // Indicate that initialization was successful
+  InitPattern();
+  
+}
 
 void loop() {
     // If programming failed don't try to do anything
-    if (!dmpReady) return;
+    if (!dmpReady) { return; }
 
     // Wait for MPU interrupt or for extra available packet(s)
     while (!mpuInterrupt && fifoCount < packetSize) {
       // Put code here to run while waiting for data
-      if (Q.isFull()) { 
-        LEDOn(); 
+      
+      // If buffer is not empty try to transmit remaining data
+      if (!Q.isEmpty()) {
+        
+        byte TX[18];
+        // Fetch data from the buffer without removing it from the queue
+        Q.peek((uint8_t *) & TX);
+        
+        // Wait for transmission to happen
+        LastTX = radio.writeBlocking(&TX, sizeof(TX), 1);
+        
+        // If transmission is successful
+        if (LastTX) { 
+          // Remove the packet from the queue
+          Q.pop((uint8_t *) & TX); 
+        }
+        
       }
-      byte TX[18];
-      Q.peek((uint8_t *) & TX);
-      bool Sent = radio.writeBlocking(&TX, sizeof(TX), 1);
-      if (Sent) { 
-        Q.pop((uint8_t *) & TX); 
-      }
+      
     }
 
     // Reset interrupt flag
@@ -57,12 +78,12 @@ void loop() {
     
     // Otherwise, check for DMP data ready interrupt
     else if (mpuIntStatus & 0x02) {
+      
         // Wait for correct available data length
         while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
 
         // Read a packet from the FIFO buffer
         mpu.getFIFOBytes(fifoBuffer, packetSize);
-        
         // Track FIFO count here in case there are more than 1 packets available
         // This lets us immediately read more without waiting for an interrupt
         fifoCount -= packetSize;
@@ -77,6 +98,7 @@ void loop() {
         GyroPlanePacket[8] = fifoBuffer[12];
         GyroPlanePacket[9] = fifoBuffer[13];
 
+        // Include precise clock in the packet
         // Bit shift to split 32bit unsigned long into 4 bytes
         // Will overflow every ~40 minutes and is precise to about 4uS
         unsigned long Time = micros();
@@ -95,9 +117,10 @@ void loop() {
 
         // Push the RX in the circular transmission buffer
         Q.push((uint8_t *) & RX);
-
-        // Blink LED to indicate activity
-        ActivityBlink();
         
     }
+
+    // Blink LEDs to appropriate color to indicate activity
+    ActivityBlink(LastTX ? StatusOK : Q.isFull() ? BufferFull : TransmissionError);
+    
 }

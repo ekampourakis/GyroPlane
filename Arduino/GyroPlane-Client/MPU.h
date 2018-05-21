@@ -12,27 +12,34 @@ MPU6050 mpu;
 
 // MPU initialization state
 bool dmpReady = false;
+
 // Holds actual interrupt status byte from the MPU
 uint8_t mpuIntStatus;
+
 // Return status after each module operation (0 = success, !0 = error)
 uint8_t devStatus;
+
 // Expected DMP packet size (default is 42 bytes)
 uint16_t packetSize;
+
 // Count of all bytes currently in FIFO buffer
 uint16_t fifoCount;
+
 // FIFO storage buffer
 uint8_t fifoBuffer[64];
 
 // Packet structure
 uint8_t GyroPlanePacket[18] = {'$', 0x02, 0,0, 0,0, 0,0, 0,0, 0,0,0,0, 0x00, 0x00, '\r', '\n'};
-//uint8_t GyroPlanePacket[14] = {'$', 0x02, 0,0, 0,0, 0,0, 0,0, 0x00, 0x00, '\r', '\n'};
+
+// Outdated packet structure not containing timestamp
+// uint8_t GyroPlanePacket[14] = {'$', 0x02, 0,0, 0,0, 0,0, 0,0, 0x00, 0x00, '\r', '\n'}; 
 
 // Indicates whether MPU interrupt pin has gone high
 volatile bool mpuInterrupt = false;
 void dmpDataReady() { mpuInterrupt = true; }
 
 void InitMPU() {
-
+  
   // Library stuff
   #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
       Wire.begin();
@@ -49,18 +56,18 @@ void InitMPU() {
   
   // Blink slowly until sensor is initialized
   while (!mpu.testConnection()) {
-    LongBlink();
+    Blink(Loading, 1, 150);
   }
   devStatus = mpu.dmpInitialize();
   
   // Supply your own gyro offsets here
   // Run IMU_ZERO.ino sketch to find yours
-  mpu.setXGyroOffset(115);
-  mpu.setYGyroOffset(-34);
-  mpu.setZGyroOffset(-26);
-  mpu.setZAccelOffset(1679);
-  mpu.setXAccelOffset(-1559);
-  mpu.setYAccelOffset(-1399);
+  mpu.setXAccelOffset(-1669);
+  mpu.setYAccelOffset(1569); 
+  mpu.setZAccelOffset(887);
+  mpu.setXGyroOffset(64);
+  mpu.setYGyroOffset(-33);
+  mpu.setZGyroOffset(4);  
   
   // Make sure it worked (returns 0 if so)
   if (devStatus == 0) {
@@ -82,13 +89,9 @@ void InitMPU() {
     
     // Blink continuously because sensor failed
     while (true) {
-      ShortBlink(1, 50);
+      Blink(Error, 1, 50);
     }
     
   }
-  
-  // Blinking pattern to indicate successful MPU initialization
-  LongBlink(1, 500);
-  ShortBlink(2, 150);
   
 }
