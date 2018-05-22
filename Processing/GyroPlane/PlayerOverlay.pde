@@ -28,7 +28,9 @@ void DrawPlayer() {
   if (PlaybackActive) {
     DoPlayback();
   } 
+  rotate(toRotate[0], -toRotate[1], toRotate[3], toRotate[2]);
   DrawPlane();
+  DrawAxes(115 * m, true);
   // Pop the matrix from the stack and go back to normal origin for the HUD
   popMatrix();  
   // Draw HUD top most
@@ -39,6 +41,9 @@ void DrawPlayer() {
   DrawTimeBar();
   // Draw frame counter
   DrawTimeInfo();
+  
+  DrawReference();
+    
   cam.endHUD();
 }
 

@@ -21,7 +21,7 @@ void setup() {
   println(Serial.list());
   
   // Connect to serial port
-  port = new Serial(this, "COM6", 115200);
+  // port = new Serial(this, "COM9", 115200);
   
   Width = width;
   Height = height;
@@ -98,6 +98,10 @@ void draw() {
       // Draw the buttons
       DrawButtons();
     }
+    
+    // Draw reference axes relative to the camera 
+    DrawReference();
+    
     cam.endHUD();
     // Push new transformation matrix on the stack for centering viewport
     pushMatrix();

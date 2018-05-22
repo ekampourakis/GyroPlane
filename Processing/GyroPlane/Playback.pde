@@ -38,7 +38,7 @@ void DoPlayback() {
   // for now just call realtime
   Realtime();
   if (RequiresPlayback) {
-    rotate(toRotate[0], -toRotate[1], toRotate[3], toRotate[2]);
+    //rotate(toRotate[0], -toRotate[1], toRotate[3], toRotate[2]);
     RequiresPlayback = false;
   }
 }
