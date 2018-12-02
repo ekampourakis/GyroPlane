@@ -11,8 +11,3 @@ MPU6050 <https://github.com/jrowberg/i2cdevlib/tree/master/Arduino/MPU6050>
 
 ### Processing:
 toxiclibs <https://bitbucket.org/postspectacular/toxiclibs/downloads/>
-
-
-## Instructions:
-
-For schematics, electronics enclosure and illustrated instructions visit my Instructables article [here](https://www.instructables.com/member/manos364/)
